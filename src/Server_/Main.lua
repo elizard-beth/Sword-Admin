@@ -37,6 +37,9 @@ coroutine.wrap(function()
 	end)
 end)()
 
+print("Initialized Sword Admin v6.")
+
+
 CheckAdmin = {
 	PurchasedRank = function(Player)
 		local PlayerPurchasedRank = 0
@@ -72,32 +75,36 @@ CheckAdmin = {
 			or PlayerPurchasedRank == 1
 		-- cover all our grounds!
 	end,
-	AdminRank = function(Player)
-		local PlayerName = Player.Name:lower()
+	AdminRank = function(plr)
+		if typeof(plr) ~= "Instance" then return end
+		local PlayerName = tostring(plr.Name)
+		local PlayerName = string.lower(PlayerName)
 		local currentAdminDataStore = AdmindsDataStore:GetAsync(1)
 		local currentTempAdminDataStore = TempAdmindsDataStore:GetAsync(1)
-		local PlayerPurchasedRank = CheckAdmin.PurchasedRank(Player)
+		local PlayerPurchasedRank = CheckAdmin.PurchasedRank(plr)
 		
-		if table.find(HeadAdmins, Player.UserId) 
+		if table.find(HeadAdmins, plr.UserId) 
 			or table.find(HeadAdmins, PlayerName)
 			or PlayerPurchasedRank == 3 
-			or Player.UserId == game.CreatorId then
+			or plr.UserId == game.CreatorId then
 			return 3
-		elseif table.find(currentAdminDataStore, Player.UserId) 
+		elseif table.find(currentAdminDataStore, plr.UserId) 
 			or table.find(currentAdminDataStore, PlayerName)
 			or PlayerPurchasedRank == 2 then
 			return 2
 		elseif Settings.freeAdmin == true 
-			or table.find(currentTempAdminDataStore, Player.UserId) 
+			or table.find(currentTempAdminDataStore, plr.UserId) 
 			or table.find(currentTempAdminDataStore, PlayerName) 
 			or PlayerPurchasedRank == 1 then 
 			return 1
+		else
+			return 0
 		end
 	end
 }
 
 function ParseMessage(Player, Message)
-	local Rank = CheckAdmin:AdminRank(Player)
+	local Rank = CheckAdmin.AdminRank(Player)
 	if Message:sub(1,#Settings.prefix) == Settings.prefix then
 		local CommandString = Message:sub(#Settings.prefix + 1, #(Message:split(" ")[1] or #Message))	
 		local CommandHandler = require(script.Parent.CommandHandler)
@@ -153,7 +160,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 	end
 
 	Player.Chatted:Connect(function(Message)
-		ParseMessage(Player, Message)
+				ParseMessage(Player, Message)
 	end)
 	
 	game.ReplicatedStorage:WaitForChild("Events_").CommandBar.OnServerEvent:Connect(function(Player, Message)
