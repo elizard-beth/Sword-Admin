@@ -1,12 +1,18 @@
 print("Initializing Sword Admin v6...")
-
+local SA = game.Workspace:FindFirstChild("Sword_Admin") or game.ServerScriptService:FindFirstChild("Sword_Admin")
 local PowerUserSettings = require(game.Workspace.Sword_Admin.Settings.PowerUserSettings)
-local Settings = require(game:FindFirstChild("Sword_Admin" , true).Settings)
+local Settings = require(SA.Settings)
+local CustomCommands =  require(SA.Settings.CustomCommands)
 local HeadAdmins = Settings.Head_Admins
 local AdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("Admins_s")
 local TempAdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("TAdmins_s")
 local BansDataStore = game:GetService("DataStoreService"):GetDataStore("Bans_s")
 local MarketPlaceService = game:GetService("MarketplaceService")
+local Parser = require(script.Parent.deps.parser)
+local CommandHandler = require(script.Parent.CommandHandler)
+for _, v in pairs(CustomCommands) do 
+	table.insert(CommandHandler, v)
+end
 
 -- legacy code, please consider contributing!
 coroutine.wrap(function()
@@ -106,31 +112,39 @@ CheckAdmin = {
 function ParseMessage(Player, Message)
 	local Rank = CheckAdmin.AdminRank(Player)
 	if Message:sub(1,#Settings.prefix) == Settings.prefix then
-		local CommandString = Message:sub(#Settings.prefix + 1, #(Message:split(" ")[1] or #Message))	
-		local CommandHandler = require(script.Parent.CommandHandler)
-		local Command = CommandHandler[CommandString]
+		local CommandString = Parser.get_command(Message)
+		
+		local function Command()
+			--print(CommandString, CommandHandler[CommandString])
+			CommandHandler[CommandString][1](Player,
+				{
+					CommandHandler[CommandString].args[1](Message),
+					CommandHandler[CommandString].args[2](Message),
+					CommandHandler[CommandString].args[3](Message)
+				}
+			)
+		end
 		
 		if table.find(PowerUserSettings.server.CommandHandler.enabled_commands, CommandString) == nil then
 			game.ReplicatedStorage.Events_.Notification:FireClient(Player, "Error attempting to run command that is disabled or does not exist.")
 			return "fail" 
 		end
 
-
 		if Rank == 3 then
-			Command(Player, Message:split(" ")[2], Message:split(" ")[3])
+			Command()
 		elseif Rank == 2 then
 			if table.find(Settings.Admin_Commands, Message:sub(#Settings.prefix + 1, Message:find(" ") or Message:len())) then
-				Command(Player, Message:split(" ")[2], Message:split(" ")[3])
+				Command()
 			end
 		elseif Rank == 1 then
 			if table.find(Settings.Temp_AdminCommands, Message:sub(#Settings.prefix + 1, Message:find(" ") or Message:len())) then
-				Command(Player, Message:split(" ")[2], Message:split(" ")[3])
+				Command()
 			end
 		end
 	end
 end
 
-game.Players.PlayerAdded:Connect(function(Player)
+local function DoPlayer(Player)
 	local PlayerPurchasedRank = CheckAdmin.PurchasedRank(Player)
 	
 	if script.Parent.PrivateServer.Value == true then
@@ -160,10 +174,19 @@ game.Players.PlayerAdded:Connect(function(Player)
 	end
 
 	Player.Chatted:Connect(function(Message)
-				ParseMessage(Player, Message)
+		ParseMessage(Player, Message)
 	end)
 	
 	game.ReplicatedStorage:WaitForChild("Events_").CommandBar.OnServerEvent:Connect(function(Player, Message)
 		ParseMessage(Player, Message)
 	end)
+end
+
+for _, v in pairs (game.Players:GetPlayers()) do 
+	print("Player already exists: ", v.Name)
+	DoPlayer(v)
+end
+
+game.Players.PlayerAdded:Connect(function(Player)
+	DoPlayer(Player)
 end)
