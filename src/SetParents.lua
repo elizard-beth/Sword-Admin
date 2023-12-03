@@ -7,12 +7,18 @@ if Settings.advertising == false then
 	script.Parent.GUIs_.Advertisment:Destroy()
 end
 
+local function SetGuis(Player)
+	for _, v in pairs(script.Parent.GUIs_:GetChildren()) do
+		v:Clone().Parent = Player.PlayerGui
+	end
+	local Clone = script.Parent.Client_:Clone()
+	Clone.Parent = Player.PlayerGui
+end
+
+for _, Player in pairs(game.Players:GetPlayers()) do 
+	SetGuis(Player)
+end
+
 game.Players.PlayerAdded:Connect(function(Player)
-	--Player.CharacterAdded:Connect(function()
-		for _, v in pairs(script.Parent.GUIs_:GetChildren()) do
-			v:Clone().Parent = Player.PlayerGui
-		end
-		local Clone = script.Parent.Client_:Clone()
-		Clone.Parent = Player.PlayerGui
-	--end)
+	SetGuis(Player)
 end)
