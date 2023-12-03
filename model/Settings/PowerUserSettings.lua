@@ -31,7 +31,7 @@ return {
 	
 	server = {
 		CommandHandler = {
-			enabled_commands = { "kill", "tp", "gear", "leaderstat", "sword", "faceless", "headless", "privateserver", "invisible", "visible", "admin", "unadmin", "tempadmin", "untempadmin", "ban", "unban", "fire", "smoke", "sparkles", "hipheight",  "btools", "jail", "unjail", "blind", "unblind", "brightness", "noclip", "countdown", "msg", 'music', "fly", "explode", "rejoin", "cmds", "commands", "shutdownserver", "setgrav", "require", "kick", "health", "god", "freeze", "unfreeze", "speed", "jumppower", "ff", "unff", "sit", "unsit", "char", "clone", "print", "fling" }
+			enabled_commands = {"message", "kill", "tp", "gear", "leaderstat", "sword", "faceless", "headless", "privateserver", "invisible", "visible", "admin", "unadmin", "tempadmin", "untempadmin", "ban", "unban", "fire", "smoke", "sparkles", "hipheight",  "btools", "jail", "unjail", "blind", "unblind", "brightness", "noclip", "countdown", "msg", 'music', "fly", "explode", "rejoin", "cmds", "commands", "shutdownserver", "setgrav", "require", "kick", "health", "god", "freeze", "unfreeze", "speed", "jumppower", "ff", "unff", "sit", "unsit", "char", "clone", "print", "fling" }
 		}
 	}
 }
