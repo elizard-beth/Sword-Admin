@@ -65,21 +65,12 @@ CheckAdmin = {
 		return PlayerPurchasedRank
 	end,
 	IsAdmin = function(Player) 
-		local PlayerName = Player.Name:lower()
+		--[[local PlayerName = Player.Name:lower()
 		local currentAdminDataStore = AdmindsDataStore:GetAsync(1)
 		local currentTempAdminDataStore = TempAdmindsDataStore:GetAsync(1)
 		local PlayerPurchasedRank = CheckAdmin.PurchasedRank(Player)
-		
-		return table.find(HeadAdmins, Player.UserId) or table.find(HeadAdmins, PlayerName)
-			or Player.UserId == game.CreatorId or PlayerPurchasedRank == 3 
-			or table.find(currentAdminDataStore, Player.UserId) 
-			or table.find(currentAdminDataStore, PlayerName)
-			or PlayerPurchasedRank == 2 	
-			or Settings.freeAdmin == true 
-			or table.find(currentTempAdminDataStore, Player.UserId) 
-			or table.find(currentTempAdminDataStore, PlayerName) 
-			or PlayerPurchasedRank == 1
-		-- cover all our grounds!
+		]]
+		return CheckAdmin.AdminRank(Player) > 0
 	end,
 	AdminRank = function(plr)
 		if typeof(plr) ~= "Instance" then return end
@@ -129,15 +120,14 @@ function ParseMessage(Player, Message)
 			game.ReplicatedStorage.Events_.Notification:FireClient(Player, "Error attempting to run command that is disabled or does not exist.")
 			return "fail" 
 		end
-
 		if Rank == 3 then
 			Command()
 		elseif Rank == 2 then
-			if table.find(Settings.Admin_Commands, Message:sub(#Settings.prefix + 1, Message:find(" ") or Message:len())) then
+			if table.find(Settings.Admin_Commands, Parser.get_command(CommandString)) then
 				Command()
 			end
 		elseif Rank == 1 then
-			if table.find(Settings.Temp_AdminCommands, Message:sub(#Settings.prefix + 1, Message:find(" ") or Message:len())) then
+			if table.find(Settings.Temp_AdminCommands, Parser.get_command(CommandString)) then
 				Command()
 			end
 		end
