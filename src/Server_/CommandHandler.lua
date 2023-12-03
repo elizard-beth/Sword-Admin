@@ -33,7 +33,7 @@ local function exec(Player, subject, code)
 	else
 		for _, plr in pairs(game.Players:GetPlayers()) do
 			if subject == plr.Name:sub(1,#subject):lower() then
-				code(subject)
+				code(plr)
 				break
 			end
 		end
@@ -815,40 +815,8 @@ local Commands = {
 	
 	["privateserver"] = {
 		function(Player, args)
-			-- outdated code, consider contributing!
 			game.ServerScriptService.Server_.PrivateServer.Value = true
-
-			local Settings = require(game:FindFirstChild("Sword_Admin" , true).Settings)
-			local HeadAdmins = Settings.Head_Admins
-			local AdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("Admins_s")
-			local TempAdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("TAdmins_s")
-			local BansDataStore = game:GetService("DataStoreService"):GetDataStore("Bans_s")
-			local MarketPlaceService = game:GetService("MarketplaceService")
-
-			for _, Player in pairs(game.Players:GetPlayers()) do
-				local PlayerPurchasedRank = 0
-				if Player.MembershipType == Enum.MembershipType.Premium
-					and Settings.PremiumAdmin == true then
-					PlayerPurchasedRank = Settings.PremiumRank
-				end
-				pcall(function() 
-					if MarketPlaceService:UserOwnsGamePassAsync(Player.UserId, Settings.GamePassId) then
-						PlayerPurchasedRank = Settings.GamePassRank
-					end
-				end)
-				if table.find(HeadAdmins, Player.UserId) or table.find(HeadAdmins, Player.Name)
-					or Player.UserId == game.CreatorId or PlayerPurchasedRank == 3 
-					or table.find(AdmindsDataStore:GetAsync(1), Player.UserId) 
-					or table.find(AdmindsDataStore:GetAsync(1), Player.Name)
-					or PlayerPurchasedRank == 2 	
-					or Settings.freeAdmin == true 
-					or table.find(TempAdmindsDataStore:GetAsync(1), Player.UserId) 
-					or table.find(TempAdmindsDataStore:GetAsync(1), Player.Name) 
-					or PlayerPurchasedRank == 1
-				then else
-					Player:Kick("This server is locked to Admins only.")
-				end
-			end
+			game.ReplicatedStorage.Events_.Message:FireAllClients("Server locked by: " .. Player.Name, "This server has been locked and only admins can join now.")
 		end,
 		args = {
 			function(str) return str end,
