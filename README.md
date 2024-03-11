@@ -35,6 +35,6 @@ hotfix = hotfix release, intended to quickly fix a common problem
 Version 6 is built on version 5. Version 5 is also built on version 4. However, versions 1-3 are seperate yet also built on each other:
 ```
 release: v0 -> v1 -> v2 -> v3
-major update (revamp): v4 -> v5 -> v6
+revamp: v4 -> v5 -> v6
 ```
 v4, v5 and v6 are techncially backwards compatible however you may encounter many issuees. You can change the version in `Settings.lua`
