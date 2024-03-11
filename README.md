@@ -34,8 +34,8 @@ hotfix = hotfix release, intended to quickly fix a common problem
 
 Some versions are built upon other versions and some are not, put simply:
 ```
-2019=>2020: v0 -> v1 -> v2
-2020=>2021: v3
-2021=>now : v4 -> v5 -> v6
+2019=>2020 : v0 -> v1 -> v2
+2020=>2021 : v3
+2021=>now  : v4 -> v5 -> v6
 ```
 v4, v5 and v6 are techncially backwards compatible however you may encounter many issuees. You can change the version in `Settings.lua`
