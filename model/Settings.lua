@@ -22,14 +22,14 @@ return{
 		"player2";
 		1;
 	}; 
-	Admin_Commands = {"message";" kill"; "kick"; "ff"; "unff"; "explode"; "leaderstat"; "speed"; "clone"; "tempadmin"; "freeze"; "cmds";};
+	Admin_Commands = {"commands"; "message";" kill"; "kick"; "ff"; "unff"; "explode"; "leaderstat"; "speed"; "clone"; "tempadmin"; "freeze"; "cmds";};
 
 	Temp_Admins = {
 		"player1"; 
 		"player2";
 		1;
 	}; 
-	Temp_AdminCommands = {"kill"; "ff"; "unff"; "speed"; "freeze"; "cmds";};
+	Temp_AdminCommands = {"commands"; "kill"; "ff"; "unff"; "speed"; "freeze"; "cmds";};
 	
 	------[BANNING]-------
 	
