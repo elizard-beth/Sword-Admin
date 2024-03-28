@@ -1,7 +1,14 @@
 local PowerUserSettings = require(script.Parent.PowerUserSettings)
 local Modules = {
+	[7] = { 
+		id = 6912742379, 
+		compatiblity = { 
+			inStudio = true,
+			overAll = true
+		}
+	},
 	[6] = {
-		id = --[[game.ServerStorage.MainModule or]] 12279504947,
+		id = 12279504947,
 		compatiblity = {
 			inStudio = true,
 			overAll = true
@@ -43,6 +50,12 @@ local Modules = {
 		} 
 	}
 }
+
+print("Loading Sword Admin...")
+
+if game:GetService("RunService"):IsStudio() == true then
+	wait(2)
+end
 
 if PowerUserSettings.sword.sEnabled == false then 
 	script.Parent.Parent:Destroy()
