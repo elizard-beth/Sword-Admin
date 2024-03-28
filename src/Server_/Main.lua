@@ -1,8 +1,8 @@
-print("Initializing Sword Admin v6...")
-local SA = game.Workspace:FindFirstChild("Sword_Admin") or game.ServerScriptService:FindFirstChild("Sword_Admin")
+print("Initializing Sword Admin v7...")
 local PowerUserSettings = require(game.Workspace.Sword_Admin.Settings.PowerUserSettings)
-local Settings = require(SA.Settings)
-local CustomCommands =  require(SA.Settings.CustomCommands)
+local SettingsL = workspace.Sword_Admin.Settings
+local Settings = require(workspace.Sword_Admin.Settings)
+local CustomCommands =  require(SettingsL.CustomCommands)
 local HeadAdmins = Settings.Head_Admins
 local AdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("Admins_s")
 local TempAdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("TAdmins_s")
@@ -14,36 +14,23 @@ for _, v in pairs(CustomCommands) do
 	table.insert(CommandHandler, v)
 end
 
--- legacy code, please consider contributing!
-coroutine.wrap(function()
-	pcall(function()
-		if not AdmindsDataStore:GetAsync(1) then
-			AdmindsDataStore:SetAsync(1, Settings.Admins)
-		end
-		
-		if not TempAdmindsDataStore:GetAsync(1) then
-			TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
-		end
+local TempAdmins = TempAdmindsDataStore:GetAsync(1)
+if not TempAdmins then
+	TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
+end
+for _, v in pairs(TempAdmins) do 
+	table.insert(Settings.Temp_Admins, v) 
+end
 
-		local temp_tempa = TempAdmindsDataStore:GetAsync(1)
-		for _, v in pairs (Settings.Temp_Admins) do
-			if not table.find(TempAdmindsDataStore:GetAsync(1), v) then
-				table.insert(temp_tempa, v)
-			end
-		end
-		TempAdmindsDataStore:SetAsync(1, temp_tempa)
-		
-		local temp_a = AdmindsDataStore:GetAsync(1)
-		for _, v in pairs (Settings.Admins) do
-			if not table.find(AdmindsDataStore:GetAsync(1), v) then
-				table.insert(temp_a, v)
-			end
-		end
-		AdmindsDataStore:SetAsync(1, temp_a)
-	end)
-end)()
+if not AdmindsDataStore:GetAsync(1) then
+	AdmindsDataStore:SetAsync(1, Settings.Admins)
+end
+local Admins = AdmindsDataStore:GetAsync(1)
+for _, v in pairs(Admins) do 
+	table.insert(Settings.Admins, v)
+end
 
-print("Initialized Sword Admin v6.")
+print("Initialized Sword Admin v7.")
 
 
 CheckAdmin = {
@@ -85,13 +72,13 @@ CheckAdmin = {
 			or PlayerPurchasedRank == 3 
 			or plr.UserId == game.CreatorId then
 			return 3
-		elseif table.find(currentAdminDataStore, plr.UserId) 
-			or table.find(currentAdminDataStore, PlayerName)
+		elseif table.find(Settings.Admins, plr.UserId) 
+			or table.find(Settings.Admins, PlayerName)
 			or PlayerPurchasedRank == 2 then
 			return 2
 		elseif Settings.freeAdmin == true 
-			or table.find(currentTempAdminDataStore, plr.UserId) 
-			or table.find(currentTempAdminDataStore, PlayerName) 
+			or table.find(Settings.Temp_Admins, plr.UserId) 
+			or table.find(Settings.Temp_Admins, PlayerName) 
 			or PlayerPurchasedRank == 1 then 
 			return 1
 		else
@@ -101,6 +88,7 @@ CheckAdmin = {
 }
 
 function ParseMessage(Player, Message)
+	print(Settings.Admins)
 	local Rank = CheckAdmin.AdminRank(Player)
 	if Message:sub(1,#Settings.prefix) == Settings.prefix then
 		local CommandString = Parser.get_command(Message)
@@ -179,4 +167,18 @@ end
 
 game.Players.PlayerAdded:Connect(function(Player)
 	DoPlayer(Player)
+end)
+
+game:BindToClose(function()
+	print("Saving admins...")
+	AdmindsDataStore:SetAsync(1, Settings.Admins)
+	TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
+	print("Saved admins.")
+end)
+
+game.Players.PlayerRemoving:Connect(function()
+	print("Saving admins...")
+	AdmindsDataStore:SetAsync(1, Settings.Admins)
+	TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
+	print("Saved admins.")
 end)
