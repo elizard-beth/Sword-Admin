@@ -1,7 +1,6 @@
 local UserInputService = game:GetService("UserInputService")
 local ON = true
 local db = true
-local ENV = require(game.ReplicatedStorage.Drive01.etc.applications.UIENV)["Movement"]
 
 script.Parent.MouseEnter:Connect(function()
 	ON = true
