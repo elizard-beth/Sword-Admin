@@ -1,7 +1,7 @@
 local PowerUserSettings = require(script.Parent.PowerUserSettings)
 local Modules = {
 	[7] = { 
-		id = 6912742379, --game.ReplicatedStorage.MainModule, 
+		id = 16912742379, --game.ReplicatedStorage.MainModule, 
 		compatiblity = { 
 			inStudio = true,
 			overAll = true
