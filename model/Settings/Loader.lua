@@ -1,56 +1,79 @@
-                                                                                                        --[[
-Welcome to Sword Admin. 
-
-RANK TITLE  | PERMISSIONS                            | RANK NUMBER
-------------|----------------------------------------|-------------
-Head Admins | Full command permission                | 3
-Admins      | A set command permssion of your choice | 2
-Temp Admins | A set command permssion of your choice | 1                                                ]]
-
-return{
-	------[ADMINS]-------
-	
-	Head_Admins = {
-		"WideSteal321"; 
-		"player2"; -- Username
-		1;         -- User id
-	};
-	-- Head Admins have access to all commands
-	
-	Admins = {
-		"player1"; 
-		"player2";
-		1;
-	}; 
-	Admin_Commands = {"commands"; "message";" kill"; "kick"; "ff"; "unff"; "explode"; "leaderstat"; "speed"; "clone"; "tempadmin"; "freeze"; "cmds";};
-
-	Temp_Admins = {
-		"player1"; 
-		"player2";
-		1;
-	}; 
-	Temp_AdminCommands = {"commands"; "kill"; "ff"; "unff"; "speed"; "freeze"; "cmds";};
-	
-	------[BANNING]-------
-	
-	BanLand = {
-		"player1";
-		"player2";
-		1;
-	};
-	
-	------[PERKS_GIVEN]-------
-	--! Gamepasses take higher priority over premium.
-	GamePassId = 0;
-	GamePassRank = 1;
-	
-	PremiumAdmin = false; 
-	PremiumRank = 1;
-
-	------[MISC]-------
-
-	prefix = ";";
-	adminJoinMessage = true;
-	advertising = true;
-	freeAdmin = false;
+local PowerUserSettings = require(script.Parent.PowerUserSettings)
+local Modules = {
+	[7] = { 
+		id = 6912742379, --game.ReplicatedStorage.MainModule, 
+		compatiblity = { 
+			inStudio = true,
+			overAll = true
+		}
+	},
+	[6] = {
+		id = 12279504947,
+		compatiblity = {
+			inStudio = true,
+			overAll = true
+		}
+	}, 
+	[5] = { 
+		id = 7461392395,
+		compatiblity = {
+			inStudio = true,
+			overAll = false
+		}
+	},
+	[4] = {
+		id = 6244431802,
+		compatiblity = {
+			inStudio = false,
+			overAll = false
+		}
+	},
+	[3] = {
+		id = "invalid",
+		compatiblity = {
+			inStudio = false,
+			overAll = false
+		} 
+	},
+	[2] = {
+		id = "invalid",
+		compatiblity = {
+			inStudio = false,
+			overAll = false
+		} 
+	},
+	[1] = {
+		id = "invalid",
+		compatiblity = {
+			inStudio = false,
+			overAll = false
+		} 
+	}
 }
+
+print("Loading Sword Admin...")
+
+if game:GetService("RunService"):IsStudio() == true then
+	wait(2)
+end
+
+if PowerUserSettings.sword.sEnabled == false then 
+	script.Parent.Parent:Destroy()
+end
+local SelectedVersion = Modules[PowerUserSettings.sword.sVersion]
+pcall(function() require(SelectedVersion.id).Parent = workspace end)
+
+if PowerUserSettings.sword.compatWarnings == true then
+	if SelectedVersion == nil then 
+		warn("URGENT: Invalid version detected. If you wish to disable Sword Admin, set the 'Loader' script to disabled. Otherwise set to a valid version.")
+	end
+	if SelectedVersion.id == "invalid" then 
+		warn("URGENT: Selected version [v" .. PowerUserSettings.sword.sVersion .. "] is comletely unsupported with this module and refuses to load.")
+	end
+	if SelectedVersion.compatiblity.overAll == false then
+		warn("WARNING: This version of Sword Admin [v" .. PowerUserSettings.sword.sVersion .. "] is not supported with this model") 
+	end
+	if SelectedVersion.compatiblity.inStudio == false then
+		warn("WARNING: This version of Sword Admin [v" .. PowerUserSettings.sword.sVersion .. "] is not supported in Studio mode") 
+	end
+end
