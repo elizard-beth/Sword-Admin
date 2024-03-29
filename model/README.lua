@@ -5,17 +5,14 @@
  `--. \ \ /\ / / _ \| '__/ _` | |  _  |/ _` | '_ ` _ \| | '_ \ 
 /\__/ /\ V  V / (_) | | | (_| | | | | | (_| | | | | | | | | | |
 \____/  \_/\_/ \___/|_|  \__,_| \_| |_/\__,_|_| |_| |_|_|_| |_|
-                                                      version 6
+                                                      version 7
                                                       
-Created by "WideSteal321" since January 2023.
+Created by "WideSteal321" since March 2024.
 
-Sword Admin v6 includes:
+Sword Admin v7 includes:
 -> 50+ commands
--> More reliability/stability
 -> UI improvements
--> Optimizations
--> Fixes
--> Better customization for power users                        
+-> Optimizations                       
 
 ##############################################################
  _    _                  _                 
@@ -41,7 +38,7 @@ ADMIN AS A WHOLE.
 | \__/\ | |  __/ (_| | | |_\__ \
  \____/_|  \___|\__,_|_|\__|___/
                                 
-Widesteal321 - Sword Admin v5
+Widesteal321 - Sword Admin
 F3X/GigsD4X - "Building Tools by F3X",
                public asset bundled with this
 
@@ -55,7 +52,7 @@ F3X/GigsD4X - "Building Tools by F3X",
             | |     __/ |        __/ |          
             |_|    |___/        |___/ 
             
-Copyright (c) 2022 Widesteal321
+Copyright (c) 2024 Widesteal321
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
