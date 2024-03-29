@@ -1,8 +1,7 @@
 local InsertService = game:GetService("InsertService")
 local parser = require(script.Parent.deps.parser)
 local BansDataStore = game:GetService("DataStoreService"):GetDataStore("Bans_s")
-local AdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("Admins_s")
-local TempAdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("TAdmins_s")
+local Settings = require(game.Workspace.Sword_Admin.Settings)
 local TeleportService = game:GetService("TeleportService")
 
 --local a=require(game.ReplicatedStorage.SwitchCase)[2];local switch=a.switch;local case=a.case
@@ -739,10 +738,8 @@ local Commands = {
 	["admin"] = {
 		function(Player, args)
 			exec(Player, args[1], function(plr)
-				local Current = AdmindsDataStore:GetAsync(1)
-				if not table.find(Current, plr.UserId) then
-					table.insert(Current, plr.UserId)
-					AdmindsDataStore:SetAsync(1, Current)
+				if not table.find(Settings.Admins, plr.UserId) then
+					table.insert(Settings.Admins, plr.UserId)
 				end
 			end)
 		end,
@@ -756,14 +753,11 @@ local Commands = {
 	["unadmin"] = {
 		function(Player, args)
 			exec(Player, args[1], function(plr)
-				local Current = AdmindsDataStore:GetAsync(1)
-
-				if table.find(Current, plr.UserId) then
-					table.remove(Current, table.find(Current, plr.UserId))
-					AdmindsDataStore:SetAsync(1, Current)
-				elseif table.find(Current, plr.Name) then
-					table.remove(Current, table.find(Current, plr.Name))
-					AdmindsDataStore:SetAsync(1, Current)
+				if table.find(Settings.Admins, plr.UserId) then
+					table.remove(Settings.Admins, table.find(Settings.Admins, plr.UserId))
+				end
+				if table.find(Settings.Admins, plr.Name) then
+					table.remove(Settings.Admins, table.find(Settings.Admins, plr.Name))
 				end
 			end)
 		end,
@@ -777,11 +771,8 @@ local Commands = {
 	["tempadmin"] = {
 		function(Player, args)
 			exec(Player, args[1], function(plr)
-				local Current = TempAdmindsDataStore:GetAsync(1)
-
-				if not table.find(Current, plr.UserId) then
-					table.insert(Current, plr.UserId)
-					TempAdmindsDataStore:SetAsync(1, Current)
+				if not table.find(Settings.Temp_Admins, plr.UserId) then
+					table.insert(Settings.Temp_Admins, plr.UserId)
 				end
 			end)
 		end,
@@ -795,14 +786,11 @@ local Commands = {
 	["untempadmin"] = {
 		function(Player, args)
 			exec(Player, args[1], function(plr)
-				local Current = TempAdmindsDataStore:GetAsync(1)
-				
-				if table.find(Current, plr.UserId) then
-					table.remove(Current, table.find(Current, plr.UserId))
-					TempAdmindsDataStore:SetAsync(1, Current)
-				elseif table.find(Current, plr.Name) then
-					table.remove(Current, table.find(Current, plr.Name))
-					TempAdmindsDataStore:SetAsync(1, Current)
+				if table.find(Settings.Temp_Admins, plr.UserId) then
+					table.remove(Settings.Temp_Admins, table.find(Settings.Temp_Admins, plr.UserId))
+				end
+				if table.find(Settings.Temp_Admins, plr.Name) then
+					table.remove(Settings.Temp_Admins, table.find(Settings.Temp_Admins, plr.Name))
 				end
 			end)
 		end,
