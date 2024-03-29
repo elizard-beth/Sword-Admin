@@ -40,3 +40,7 @@ Some versions are built upon other versions and some are not, put simply:
 ```
 v4, v5 and v6 are techncially backwards compatible however you may encounter many issuees. You can change the version in `Settings.lua`
 v6 and v7 are backwards compatible
+
+
+## TODO
+* Fix ;tp
