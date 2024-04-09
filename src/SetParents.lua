@@ -1,5 +1,6 @@
 script.Parent:WaitForChild("Assets_").Parent = game.ReplicatedStorage
 script.Parent:WaitForChild("Events_").Parent = game.ReplicatedStorage
+script.Parent:WaitForChild("CharacterScripts_").Parent = game.ReplicatedStorage
 script.Parent:WaitForChild("Server_").Parent = game.ServerScriptService
 
 local Settings = require(game:FindFirstChild("Sword_Admin" , true).Settings)
