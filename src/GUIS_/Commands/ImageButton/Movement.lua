@@ -45,18 +45,18 @@ script.Parent.MouseEnter:Connect(function()
 				local screenres = workspace.CurrentCamera.ViewportSize
 				while true do wait()
 					if ON == false then db = true break end
-					local Vector = game:GetService("UserInputService"):GetMouseLocation()		
+					local Vector = game:GetService("UserInputService"):GetMouseLocation()						
+					script.Parent.Position = UDim2.new( 
+						(Vector.X / screenres.X) - 0.1,
+						0,
+						0,
+						Vector.Y - (game:GetService("GuiService").TopbarInset.Height + 7)
+					)
 					script.Parent.Parent.ScrollingFrame.Position = UDim2.new(
-						(Vector.X / screenres.X) / 1.5,
-						0,
-						(Vector.Y / screenres.Y) ,
-						0
-					)			
-					script.Parent.Position = UDim2.new(
-						script.Parent.Parent.ScrollingFrame.Position.X.Scale, 
-						0,
-						script.Parent.Parent.ScrollingFrame.Position.Y.Scale - 0.059,
-						0
+						script.Parent.Position.X.Scale, 
+						script.Parent.Position.X.Offset,
+						script.Parent.Position.Y.Scale + 0.05,
+						script.Parent.Position.Y.Offset
 					)
 					db = true
 				end
