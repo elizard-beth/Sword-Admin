@@ -4,8 +4,6 @@ local BansDataStore = game:GetService("DataStoreService"):GetDataStore("Bans_s")
 local Settings = require(game.Workspace.Sword_Admin.Settings)
 local TeleportService = game:GetService("TeleportService")
 
---local a=require(game.ReplicatedStorage.SwitchCase)[2];local switch=a.switch;local case=a.case
-
 local function get_conditions(Player, subject)
 	return {
 		(Player.Name == subject) or (subject == "me") or (subject == nil),
@@ -13,7 +11,7 @@ local function get_conditions(Player, subject)
 		subject == "others"
 	}
 end
--- very, VERY bad code below
+
 local function exec(Player, subject, code)	
 	local conditions = get_conditions(Player, subject)
 	
@@ -37,6 +35,55 @@ local function exec(Player, subject, code)
 			end
 		end
 	end
+end
+
+local function exec2(Player, subject1, subject2)
+	local player1 = {}
+	local player2 = {}
+	
+	local conditions1 = get_conditions(Player, subject1)
+	local conditions2 = get_conditions(Player, subject2)
+	
+	if conditions1[1] then 
+		player1 = {Player} 
+	elseif conditions1[2] then 
+		player1 = game.Players:GetPlayers()
+	elseif conditions1[3] then
+		for _, plr in pairs(game.Players:GetPlayers()) do
+			if plr ~= Player then
+				table.insert(player1, plr)
+			end
+		end
+	else
+		for _, plr in pairs(game.Players:GetPlayers()) do
+			print(subject1, plr.Name, subject1 == plr.Name:sub(1,#subject1):lower())
+			if subject1 == plr.Name:sub(1,#subject1):lower() then
+				player1 = {plr}
+				break
+			end
+		end	
+	end
+
+	if conditions2[1] then 
+		player2 = {Player} 
+	elseif conditions2[2] then 
+		player2 = game.Players:GetPlayers()
+	elseif conditions2[3] then
+		for _, plr in pairs(game.Players:GetPlayers()) do
+			if plr ~= Player then
+				table.insert(player1, plr)
+			end
+		end
+	else
+		for _, plr in pairs(game.Players:GetPlayers()) do
+			if subject2 == plr.Name:sub(1,#subject2):lower() then
+				player2 = {plr}
+				break
+			end
+		end	
+	end
+	
+	return {player1, player2}
 end
 
 local Commands = {
@@ -83,8 +130,16 @@ local Commands = {
 
 	["tp"] = {
 		function(Player, args)
-			game.Players[args[1]].Character.HumanoidRootPart.CFrame = 
-				game.Players[args[2]].Character.HumanoidRootPart.CFrame
+			local players = exec2(Player, args[1], args[2])
+			
+			for _, v in pairs(players[1]) do 
+				local Success, Error = pcall(function() 
+					v.Character.HumanoidRootPart.CFrame = players[2][1].Character.HumanoidRootPart.CFrame
+				end) 
+				if not Success then warn(Error) end 
+			end
+			
+			print(players[1][1], players[2][1])
 		end,
 		args = {
 			function(str) return string.split(str, " ")[2] end, -- Player
@@ -737,9 +792,10 @@ local Commands = {
 
 	["admin"] = {
 		function(Player, args)
-			exec(Player, args[1], function(plr)
+			exec(Player, args[1], function(plr)		
 				if not table.find(Settings.Admins, plr.UserId) then
 					table.insert(Settings.Admins, plr.UserId)
+					game.ReplicatedStorage:WaitForChild("Events_").AdminAdded:Fire(plr)
 				end
 			end)
 		end,
@@ -772,7 +828,8 @@ local Commands = {
 		function(Player, args)
 			exec(Player, args[1], function(plr)
 				if not table.find(Settings.Temp_Admins, plr.UserId) then
-					table.insert(Settings.Temp_Admins, plr.UserId)
+					table.insert(Settings.Temp_Admins, plr.UserId)					
+					game.ReplicatedStorage:WaitForChild("Events_").AdminAdded:Fire(plr)
 				end
 			end)
 		end,
