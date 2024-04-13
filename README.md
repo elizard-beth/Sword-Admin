@@ -35,9 +35,12 @@ hotfix(num) = hotfix release, intended to quickly fix a common problem
 
 ### Revamp map:
 ```
-2019=>2020 : v0 -> v1 -> v2
+2019=>2020 : v0 ~> v1 ~> v2
 2020=>2021 : v3
 2021=>now  : v4 ~> v5 -> v6 -> v7
+
+~> = loosely based upon
+-> = directly based upon
 ```
 ### Backwards compatibility 
 You can change the version in `PowerUserSettings.lua`. 
