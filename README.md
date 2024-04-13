@@ -2,7 +2,9 @@
 Sword Admin is a secure alternative for Roblox administrative commands.
  More information [here](https://devforum.roblox.com/t/sword-admin-commands/1553323).
 
-This open-source github release may not stay up to date with the latest release on Roblox.
+This open-source github release may not stay up to date with the latest release on Roblox. 
+
+If you wish to have access to the complete source code for contribution, head [here](https://create.roblox.com/store/asset/16912742379/v7-main) and follow the instructions under the "Contributing to Sword Admins development" dropdown on the devforum post.
 
 
 ## Version 7 versus Version 6 versus Version 5
