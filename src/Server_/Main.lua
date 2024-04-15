@@ -115,7 +115,7 @@ function ParseMessage(Player, Message)
 			if table.find(Settings.Admin_Commands, Parser.get_command(CommandString)) then
 				Command()
 			end
-		elseif Rank == 1 then
+		elseif Rank == 1 or CommandString == "help" then
 			if table.find(Settings.Temp_AdminCommands, Parser.get_command(CommandString)) then
 				Command()
 			end
