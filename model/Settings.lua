@@ -11,8 +11,8 @@ return{
 	------[ADMINS]-------
 	
 	Head_Admins = {
-		"WideSteal321"; 
-		"player2"; -- Username
+		"widesteal321";  --lowercase
+		"player1"; -- Username
 		1;         -- User id
 	};
 	-- Head Admins have access to all commands
@@ -22,7 +22,7 @@ return{
 		"player2";
 		1;
 	}; 
-	Admin_Commands = {"commands"; "message";" kill"; "kick"; "ff"; "unff"; "explode"; "leaderstat"; "speed"; "clone"; "tempadmin"; "freeze"; "cmds";};
+	Admin_Commands = {"commands"; "message";" kill"; "kick"; "ff"; "unff"; "explode"; "fly"; "noclip"; "ban"; "leaderstat"; "speed"; "clone"; "tempadmin"; "freeze"; "cmds";};
 
 	Temp_Admins = {
 		"player1"; 
