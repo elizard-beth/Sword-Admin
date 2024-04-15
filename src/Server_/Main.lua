@@ -102,9 +102,12 @@ function ParseMessage(Player, Message)
 			)
 		end
 		
-		if table.find(PowerUserSettings.server.CommandHandler.enabled_commands, CommandString) == nil then
-			game.ReplicatedStorage.Events_.Notification:FireClient(Player, "Error attempting to run command that is disabled or does not exist.")
-			return "fail" 
+		if PowerUserSettings.server.CommandHandler.disabled_commands then 
+			if table.find(PowerUserSettings.server.CommandHandler.disabled_commands, CommandString) ~= nil then
+				print("Player " .. Player.Name .. " attempted to run disabled command: " .. Message)
+				game.ReplicatedStorage.Events_.Notification:FireClient(Player, "Error attempting to run command that is disabled.")
+				return "fail" 
+			end
 		end
 		if Rank == 3 then
 			Command()
