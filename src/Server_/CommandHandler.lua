@@ -138,8 +138,6 @@ local Commands = {
 				end) 
 				if not Success then warn(Error) end 
 			end
-			
-			print(players[1][1], players[2][1])
 		end,
 		args = {
 			function(str) return string.split(str, " ")[2] end, -- Player
@@ -753,6 +751,13 @@ local Commands = {
 			if (args[1] == Player.Name or args[1] == nil) or args[1] == "all" then return end
 
 			exec(Player, args[1], function(plr)
+				if table.find(Settings.Admins, plr.UserId) or 
+					table.find(Settings.Head_Admins, plr.UserId) or 
+					table.find(Settings.Admins, plr.Name) or 
+					table.find(Settings.Head_Admins, plr.Name) then 
+					return 
+				end
+				
 				local Current = BansDataStore:GetAsync(1)
 				if not table.find(Current, plr.UserId) then
 					table.insert(Current, plr.UserId)
