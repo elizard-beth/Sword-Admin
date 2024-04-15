@@ -3,7 +3,6 @@ local PowerUserSettings = require(game.Workspace.Sword_Admin.Settings.PowerUserS
 local SettingsL = workspace.Sword_Admin.Settings
 local Settings = require(workspace.Sword_Admin.Settings)
 local CustomCommands =  require(SettingsL.CustomCommands)
-local HeadAdmins = Settings.Head_Admins
 local AdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("Admins_s")
 local TempAdmindsDataStore = game:GetService("DataStoreService"):GetDataStore("TAdmins_s")
 local BansDataStore = game:GetService("DataStoreService"):GetDataStore("Bans_s")
@@ -67,8 +66,8 @@ CheckAdmin = {
 		local currentTempAdminDataStore = TempAdmindsDataStore:GetAsync(1)
 		local PlayerPurchasedRank = CheckAdmin.PurchasedRank(plr)
 		
-		if table.find(HeadAdmins, plr.UserId) 
-			or table.find(HeadAdmins, PlayerName)
+		if table.find(Settings.Head_Admins, plr.UserId) 
+			or table.find(Settings.Head_Admins, PlayerName)
 			or PlayerPurchasedRank == 3 
 			or plr.UserId == game.CreatorId then
 			return 3
@@ -88,7 +87,6 @@ CheckAdmin = {
 }
 
 function ParseMessage(Player, Message)
-	print(Settings.Admins)
 	local Rank = CheckAdmin.AdminRank(Player)
 	if Message:sub(1,#Settings.prefix) == Settings.prefix then
 		local CommandString = Parser.get_command(Message)
@@ -161,7 +159,6 @@ local function DoPlayer(Player)
 end
 
 for _, v in pairs (game.Players:GetPlayers()) do 
-	print("Player already exists: ", v.Name)
 	DoPlayer(v)
 end
 
@@ -169,16 +166,28 @@ game.Players.PlayerAdded:Connect(function(Player)
 	DoPlayer(Player)
 end)
 
+local CurrentlySaving = false
+
 game:BindToClose(function()
-	print("Saving admins...")
-	AdmindsDataStore:SetAsync(1, Settings.Admins)
-	TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
-	print("Saved admins.")
+	if CurrentlySaving == false then 
+		print("Saving admins...")
+		AdmindsDataStore:SetAsync(1, Settings.Admins)
+		TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
+		print("Saved admins.")
+	else 
+		print("Already saving admins...")
+	end
 end)
 
 game.Players.PlayerRemoving:Connect(function()
+	CurrentlySaving = true
 	print("Saving admins...")
 	AdmindsDataStore:SetAsync(1, Settings.Admins)
 	TempAdmindsDataStore:SetAsync(1, Settings.Temp_Admins)
 	print("Saved admins.")
+	CurrentlySaving = false
+end)
+
+game.ReplicatedStorage:WaitForChild("Events_").AdminAdded.Event:Connect(function(Player) 
+	DoPlayer(Player)
 end)
