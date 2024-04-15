@@ -217,6 +217,17 @@ local Commands = {
 		}
 	},
 
+	["help"] = {
+		function(Player, args)
+			game.ReplicatedStorage.Events_.HelpMenu:FireClient(Player)
+		end,
+		args = {
+			function(str) return str end, 
+			function(str) return str end, 
+			function(str) return str end 
+		}
+	},
+
 	["cmds"] = {
 		function(Player, args)
 			game.ReplicatedStorage.Events_.Commands:FireClient(Player)
