@@ -2,13 +2,13 @@
 
 return {
 	sword = {
-		sVersion = 6; 
+		sVersion = 7; 
 			compatWarnings = true;
 		sEnabled = true;
 	},
 	
 	client = {
-		fly = {
+		--[[fly = {
 			bg = {
 				P = 9e4,
 				maxTorque = Vector3.new(9e9, 9e9, 9e9) 
@@ -17,7 +17,7 @@ return {
 				velocity = Vector3.new(0,0.1,0), 
 				maxForce = Vector3.new(9e9, 9e9, 9e9)
 			},
-		},
+		},]] -- no longer does anything with new script
 		msgcountdown = {
 			maxNum = 200,
 		},
@@ -31,7 +31,7 @@ return {
 	
 	server = {
 		CommandHandler = {
-			enabled_commands = {"message", "kill", "tp", "gear", "leaderstat", "sword", "faceless", "headless", "privateserver", "invisible", "visible", "admin", "unadmin", "tempadmin", "untempadmin", "ban", "unban", "fire", "smoke", "sparkles", "hipheight",  "btools", "jail", "unjail", "blind", "unblind", "brightness", "noclip", "countdown", "msg", 'music', "fly", "explode", "rejoin", "cmds", "commands", "shutdownserver", "setgrav", "require", "kick", "health", "god", "freeze", "unfreeze", "speed", "jumppower", "ff", "unff", "sit", "unsit", "char", "clone", "print", "fling" }
+			disabled_commands = {}
 		}
 	}
 }
